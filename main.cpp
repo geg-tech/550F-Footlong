@@ -92,8 +92,8 @@ void usercontrol(void) {
 
     // Drivetrain movement
       // get joystick values
-    int leftY = -600 * Controller.Axis1.position(percent); // multiply percent by 600 to get rpm
-    int rightX = 600 * Controller.Axis3.position(percent);
+    int leftY = -6 * Controller.Axis1.position(); // multiply percent by 600 to get rpm
+    int rightX = 6 * Controller.Axis3.position();
       // move the left side of the robot
     DrivetrainLeft.spin(forward, leftY - rightX, rpm);
       // move the right side of the robot 
