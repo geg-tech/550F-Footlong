@@ -21,12 +21,12 @@ competition Competition;
 controller Controller = controller();
   // define drivetrain motors/motor groups
     // motors
-motor MotorL1 = motor(PORT1, ratio6_1); //second parameter dictates motor cartridge, ratio6_1 is blue speed cartridge
-motor MotorL2 = motor(PORT2, ratio6_1);
-motor MotorL3 = motor(PORT3, ratio6_1);
-motor MotorR1 = motor(PORT8, ratio6_1);
-motor MotorR2 = motor(PORT9, ratio6_1);
-motor MotorR3 = motor(PORT10, ratio6_1);
+motor MotorL1 = motor(PORT11, ratio6_1); //second parameter dictates motor cartridge, ratio6_1 is blue speed cartridge
+motor MotorL2 = motor(PORT12, ratio6_1);
+motor MotorL3 = motor(PORT13, ratio6_1);
+motor MotorR1 = motor(PORT20, ratio6_1);
+motor MotorR2 = motor(PORT19, ratio6_1);
+motor MotorR3 = motor(PORT18, ratio6_1);
     // motor groups
 motor_group DrivetrainLeft = motor_group(MotorL1, MotorL2, MotorL3);
 motor_group DrivetrainRight = motor_group(MotorR1, MotorR2, MotorR3);
