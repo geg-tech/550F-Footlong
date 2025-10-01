@@ -24,9 +24,11 @@ controller Controller = controller();
 motor MotorL1 = motor(PORT11, ratio6_1); //second parameter dictates motor cartridge, ratio6_1 is blue speed cartridge
 motor MotorL2 = motor(PORT12, ratio6_1);
 motor MotorL3 = motor(PORT13, ratio6_1);
-motor MotorR1 = motor(PORT20, ratio6_1);
+motor MotorR1 = motor(PORT9, ratio6_1);
 motor MotorR2 = motor(PORT19, ratio6_1);
 motor MotorR3 = motor(PORT18, ratio6_1);
+    // motor for intake/conveyor
+motor MotorIntake = motor(PORT1,ratio18_1);
     // motor groups
 motor_group DrivetrainLeft = motor_group(MotorL1, MotorL2, MotorL3);
 motor_group DrivetrainRight = motor_group(MotorR1, MotorR2, MotorR3);
@@ -98,7 +100,21 @@ void usercontrol(void) {
     DrivetrainLeft.spin(forward, leftY - rightX, rpm);
       // move the right side of the robot 
     DrivetrainRight.spin(forward, leftY + rightX, rpm);
-    
+
+    // variable fo button bumper
+    bool pressy = Controller.ButtonR1.pressing();
+    bool pressylower = Controller.ButtonR2.pressing();
+    // set up speed for intake motor
+    MotorIntake.setVelocity(200,rpm);
+    // if controller bumper is presse motor go spin
+    if (pressy == true){
+      MotorIntake.spin(reverse);
+    } else if (pressylower == true) {
+      MotorIntake.spin(forward);
+    } else {
+      MotorIntake.stop();
+    }
+
     wait(20, msec); // Sleep the task for a short amount of time to
                     // prevent wasted resources.
   }
