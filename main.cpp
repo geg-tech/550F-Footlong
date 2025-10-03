@@ -33,7 +33,7 @@ motor MotorIntake = motor(PORT1,ratio18_1);
 motor_group DrivetrainLeft = motor_group(MotorL1, MotorL2, MotorL3);
 motor_group DrivetrainRight = motor_group(MotorR1, MotorR2, MotorR3);
   // define drivetrain object
-drivetrain Drivetrain = drivetrain(DrivetrainLeft, DrivetrainRight, 10.21, 14, 14, inches, 0.75);
+drivetrain Drivetrain = drivetrain(DrivetrainLeft, DrivetrainRight, 12.5, 14, 14, inches, 0.75);
 
 //-----------------------------------------------------------------------------------------------------
 
@@ -70,6 +70,18 @@ void autonomous(void) {
   // ..........................................................................
 }
 
+
+void autotototot(void){
+  Drivetrain.driveFor(10, inches, 200, rpm);
+  wait(2, seconds);
+  Drivetrain.turnFor(left,45, degrees);
+  wait(3, seconds);
+  Drivetrain.driveFor(3, inches, 200, rpm);
+  wait(6, seconds);
+  MotorIntake.spinFor(reverse, 5, sec);
+  wait(6, seconds);
+  Drivetrain.stop();
+}
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*                              User Control Task                            */
@@ -80,9 +92,11 @@ void autonomous(void) {
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
-void usercontrol(void) {
+void usercontrol() {
   // User control code here, inside the loop
-  while (1) {
+    Controller.ButtonY.pressed(autotototot);
+      
+    
     // This is the main execution loop for the user control program.
     // Each time through the loop your program should update motor + servo
     // values based on feedback from the joysticks.
@@ -117,7 +131,7 @@ void usercontrol(void) {
 
     wait(20, msec); // Sleep the task for a short amount of time to
                     // prevent wasted resources.
-  }
+
 }
 
 //
