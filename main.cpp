@@ -21,9 +21,9 @@ competition Competition;
 controller Controller = controller();
   // define drivetrain motors/motor groups
     // motors
-motor MotorL1 = motor(PORT11, ratio6_1); //second parameter dictates motor cartridge, ratio6_1 is blue speed cartridge
-motor MotorL2 = motor(PORT12, ratio6_1);
-motor MotorL3 = motor(PORT13, ratio6_1);
+motor MotorL1 = motor(PORT11, ratio6_1,true); //second parameter dictates motor cartridge, ratio6_1 is blue speed cartridge
+motor MotorL2 = motor(PORT12, ratio6_1,true);
+motor MotorL3 = motor(PORT13, ratio6_1,true);
 motor MotorR1 = motor(PORT9, ratio6_1);
 motor MotorR2 = motor(PORT19, ratio6_1);
 motor MotorR3 = motor(PORT18, ratio6_1);
@@ -71,17 +71,11 @@ void autonomous(void) {
 }
 
 
-void autotototot(void){
-  Drivetrain.driveFor(10, inches, 200, rpm);
-  wait(2, seconds);
-  Drivetrain.turnFor(left,45, degrees);
-  wait(3, seconds);
-  Drivetrain.driveFor(3, inches, 200, rpm);
-  wait(6, seconds);
-  MotorIntake.spinFor(reverse, 5, sec);
-  wait(6, seconds);
-  Drivetrain.stop();
+void autotototot(){
+  Drivetrain.drive(forward);
+  // Drivetrain.driveFor(10, inches, 200, rpm);
 }
+
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*                              User Control Task                            */
@@ -94,7 +88,6 @@ void autotototot(void){
 
 void usercontrol() {
   // User control code here, inside the loop
-    Controller.ButtonY.pressed(autotototot);
       
     
     // This is the main execution loop for the user control program.
@@ -108,7 +101,7 @@ void usercontrol() {
 
     // Drivetrain movement
       // get joystick values
-    int leftY = -6 * Controller.Axis1.position(); // multiply percent by 6 to get rpm, Controller.AxisNUMBER.position(); returns numbers -100 to 100
+    int leftY = 6 * Controller.Axis1.position(); // multiply percent by 6 to get rpm, Controller.AxisNUMBER.position(); returns numbers -100 to 100
     int rightX = 6 * Controller.Axis3.position();
       // move the left side of the robot
     DrivetrainLeft.spin(forward, leftY - rightX, rpm);
@@ -128,6 +121,7 @@ void usercontrol() {
     } else {
       MotorIntake.stop();
     }
+    Controller.ButtonY.pressed(autotototot);
 
     wait(20, msec); // Sleep the task for a short amount of time to
                     // prevent wasted resources.
