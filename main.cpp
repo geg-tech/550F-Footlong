@@ -72,14 +72,18 @@ void autonomous(void) {
 
 
 void autotototot(){
-  Drivetrain.drive(forward);
-  // Drivetrain.driveFor(10, inches, 200, rpm);
+  Drivetrain.driveFor(56, inches, 200, rpm);
+  Drivetrain.turnFor(left,30, degrees);
+  Drivetrain.driveFor(10, inches, 200, rpm);
+  MotorIntake.spinFor(forward, 5, sec);
+  Drivetrain.stop();
+  // Drivetrain.driveFor(10, inches, 200, rpm);a
 }
 
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*                              User Control Task                            */
-/*                                                                           */
+/*                                                                 2         */
 /*  This task is used to control your robot during the user control phase of */
 /*  a VEX Competition.                                                       */
 /*                                                                           */
