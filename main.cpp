@@ -1,8 +1,8 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*    Module:       main.cpp                                                  */
-/*    Author:       4804195893                                                */
-/*    Created:      8/29/2025, 8:51:54 AM                                     */
+/*    Author:       4806000570                                                */
+/*    Created:      10/8/2025, 12:54:28 PM                                    */
 /*    Description:  V5 project                                                */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -13,8 +13,6 @@ using namespace vex;
 
 // A global instance of competition
 competition Competition;
-
-//-----------------------------------------------------------------------------------------------------
 
 // define your global instances of motors and other devices here
   // define controller
@@ -28,16 +26,13 @@ motor MotorR1 = motor(PORT9, ratio6_1);
 motor MotorR2 = motor(PORT19, ratio6_1);
 motor MotorR3 = motor(PORT18, ratio6_1);
     // motor for intake/conveyor
-motor MotorIntake = motor(PORT1,ratio18_1);
+motor MotorIntake = motor(PORT1, ratio18_1);
+motor MITop = motor(PORT8, ratio18_1);
     // motor groups
 motor_group DrivetrainLeft = motor_group(MotorL1, MotorL2, MotorL3);
 motor_group DrivetrainRight = motor_group(MotorR1, MotorR2, MotorR3);
   // define drivetrain object
 drivetrain Drivetrain = drivetrain(DrivetrainLeft, DrivetrainRight, 12.5, 14, 14, inches, 0.75);
-
-//-----------------------------------------------------------------------------------------------------
-
-
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
 /*                                                                           */
@@ -68,55 +63,35 @@ void autonomous(void) {
   // ..........................................................................
   // Insert autonomous user code here.
   // ..........................................................................
-  Drivetrain.driveFor(56, inches, 200, rpm);
-  Drivetrain.turnFor(left,30, degrees);
-  Drivetrain.driveFor(10, inches, 200, rpm);
-  MotorIntake.spinFor(forward, 5, sec);
-  Drivetrain.stop();
 }
-
-
-void autotototot(){
-  Drivetrain.driveFor(56, inches, 200, rpm);
-  Drivetrain.turnFor(left,30, degrees);
-  Drivetrain.driveFor(10, inches, 200, rpm);
-  MotorIntake.spinFor(forward, 5, sec);
-  Drivetrain.stop();
-  // Drivetrain.driveFor(10, inches, 200, rpm);a
-}
-
 
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*                              User Control Task                            */
-/*                                                                 2         */
+/*                                                                           */
 /*  This task is used to control your robot during the user control phase of */
 /*  a VEX Competition.                                                       */
 /*                                                                           */
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
-void usercontrol() {
+void usercontrol(void) {
   // User control code here, inside the loop
-      
-    
+  while (1) {
     // This is the main execution loop for the user control program.
     // Each time through the loop your program should update motor + servo
     // values based on feedback from the joysticks.
 
     // ........................................................................
-    // Insert user code here. This is where you use the joystick values to
-    // update your motors, etc.
-    // ........................................................................
-
-    // Drivetrain movement
+        // Drivetrain movement
       // get joystick values
     int leftY = 6 * Controller.Axis1.position(); // multiply percent by 6 to get rpm, Controller.AxisNUMBER.position(); returns numbers -100 to 100
     int rightX = 6 * Controller.Axis3.position();
       // move the left side of the robot
-    DrivetrainLeft.spin(forward, leftY - rightX, rpm);
+    DrivetrainLeft.spin(forward, leftY + rightX, rpm);
+
       // move the right side of the robot 
-    DrivetrainRight.spin(forward, leftY + rightX, rpm);
+    DrivetrainRight.spin(forward, rightX - leftY, rpm);
 
     
     // variable fo button bumper
@@ -132,12 +107,25 @@ void usercontrol() {
     } else {
       MotorIntake.stop();
     }
-      
-    Controller.ButtonY.pressed(autotototot);
+    // variable fo top intake
+    bool Verypressed = Controller.ButtonL1.pressing();
+    bool NotVerypressed = Controller.ButtonL2.pressing();
+    // set up speed for top intake motor
+    MITop.setVelocity(200,rpm);
+    // if controller bumper is presse motor go spin
+    if (Verypressed == true){
+      MITop.spin(reverse);
+    } else if (NotVerypressed == true){
+      MITop.spin(forward);
+    } else {
+      MITop.stop();
+    }
+    
+    // ........................................................................
 
     wait(20, msec); // Sleep the task for a short amount of time to
                     // prevent wasted resources.
-
+  }
 }
 
 //
