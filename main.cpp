@@ -68,6 +68,11 @@ void autonomous(void) {
   // ..........................................................................
   // Insert autonomous user code here.
   // ..........................................................................
+  Drivetrain.driveFor(56, inches, 200, rpm);
+  Drivetrain.turnFor(left,30, degrees);
+  Drivetrain.driveFor(10, inches, 200, rpm);
+  MotorIntake.spinFor(forward, 5, sec);
+  Drivetrain.stop();
 }
 
 
@@ -79,6 +84,7 @@ void autotototot(){
   Drivetrain.stop();
   // Drivetrain.driveFor(10, inches, 200, rpm);a
 }
+
 
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
@@ -112,6 +118,7 @@ void usercontrol() {
       // move the right side of the robot 
     DrivetrainRight.spin(forward, leftY + rightX, rpm);
 
+    
     // variable fo button bumper
     bool pressy = Controller.ButtonR1.pressing();
     bool pressylower = Controller.ButtonR2.pressing();
@@ -125,6 +132,7 @@ void usercontrol() {
     } else {
       MotorIntake.stop();
     }
+      
     Controller.ButtonY.pressed(autotototot);
 
     wait(20, msec); // Sleep the task for a short amount of time to
