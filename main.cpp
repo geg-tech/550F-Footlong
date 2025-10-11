@@ -37,30 +37,14 @@ motor_group BothIntakes = motor_group(MotorIntakeMain, MotorIntakeTop);
   // define drivetrain object
 drivetrain Drivetrain = drivetrain(DrivetrainLeft, DrivetrainRight, 12.5, 14, 14, inches, 0.75);
 
-//Define auton (Farton)
-void FartonLeft(){
-  Drivetrain.driveFor(56, inches, 200, rpm);
-  Drivetrain.turnFor(left,30, degrees);
-  Drivetrain.driveFor(10, inches, 200, rpm);
-  MotorIntakeMain.spinFor(forward, 5, sec);
-  Drivetrain.stop();
-}
-void FartonRight(){
-  Drivetrain.drive(forward);
-  Drivetrain.driveFor(56, inches, 200, rpm);
-  Drivetrain.turnFor(right,30, degrees);
-  Drivetrain.driveFor(10, inches, 200, rpm);
-  MotorIntakeMain.spinFor(forward, 5, sec);
-  Drivetrain.stop();
-}
-
-// Construct a 3-Wire Expander "Triport1" with the triport class.
-triport Triport1 = triport(PORT1);
-triport Triport2 = triport(PORT2);
-
 // pneumatic class.
 digital_out pneumaticMain = digital_out(Brain.ThreeWirePort.A); 
 digital_out pneumaticFront = digital_out(Brain.ThreeWirePort.B);
+
+// NEW: Global boolean to track the state of the middle pneumatic.
+bool isMiddlePneumaticExtended = false;
+// NEW: Global boolean for the latch to handle button presses.
+bool middleButtonLatch = false;
 
 
 /*---------------------------------------------------------------------------*/
@@ -76,12 +60,7 @@ digital_out pneumaticFront = digital_out(Brain.ThreeWirePort.B);
 void pre_auton(void) {
 
   pneumaticMain.set(false);
-  wait(1, seconds);
-  pneumaticMain.set(true);
-
-  pneumaticMain.set(false);
-  wait(1, seconds);
-  pneumaticMain.set(true);
+  pneumaticFront.set(false);
 
 }
 
@@ -97,8 +76,15 @@ void pre_auton(void) {
 
 void autonomous(void) {
   // ..........................................................................
-    // when Y pressed, start auton
-    Controller.ButtonA.pressed(FartonLeft);
+//Define auton (Farton)
+  Drivetrain.driveFor(42, inches, 150, rpm);
+  Drivetrain.turnFor(right,52, degrees); //SWITCH TO LEFT FOR LEFT AUTON
+  Drivetrain.driveFor(-25, inches, 100, rpm);
+  BothIntakes.spinFor(reverse, 5, sec, 200, rpm);
+
+
+  //MotorIntakeMain.spinFor(forward, 5, sec);
+  //Drivetrain.stop();
   // ..........................................................................
 }
 
@@ -118,7 +104,7 @@ void usercontrol(void) {
     // This is the main execution loop for the user control program.
     // Each time through the loop your program should update motor + servo
     // values based on feedback from the joysticks.
-
+    
     // ........................................................................
         // Drivetrain movement
       // get joystick values
@@ -131,20 +117,21 @@ void usercontrol(void) {
     DrivetrainRight.spin(forward, rightX - leftY, rpm);
 
     bool Frontpneumatic = Controller.ButtonX.pressing();
-    bool Middlepneumatic = Controller.ButtonY.pressing();
-
+    
     if (Frontpneumatic == true){
       pneumaticFront.set(true);
     } else {
       pneumaticFront.set(false);
     }
 
-    if (Middlepneumatic == true){
-      pneumaticMain.set(true);
-    } else {
-      pneumaticMain.set(false);
+    // NEW: Toggle logic for the middle pneumatic
+    if (Controller.ButtonY.pressing() && !middleButtonLatch) {
+      isMiddlePneumaticExtended = !isMiddlePneumaticExtended;
+      middleButtonLatch = true; // Set the latch
+    } else if (!Controller.ButtonY.pressing()) {
+      middleButtonLatch = false; // Release the latch
     }
-
+    pneumaticMain.set(isMiddlePneumaticExtended);
 
 
     // bool for both intakes
