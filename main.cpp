@@ -38,13 +38,18 @@ motor_group BothIntakes = motor_group(MotorIntakeMain, MotorIntakeTop);
 drivetrain Drivetrain = drivetrain(DrivetrainLeft, DrivetrainRight, 12.5, 14, 14, inches, 0.75);
 
 // pneumatic class.
-digital_out pneumaticMain = digital_out(Brain.ThreeWirePort.A); 
-digital_out pneumaticFront = digital_out(Brain.ThreeWirePort.B);
+digital_out pneumaticUnloader = digital_out(Brain.ThreeWirePort.A); 
+digital_out pneumaticDescore = digital_out(Brain.ThreeWirePort.B);
 
-// boolean to track the state of the middle pneumatic.
-bool isMiddlePneumaticExtended = false;
+// boolean to track the state of the Descore pneumatic.
+bool isDescorePneumaticExtended = false;
 // boolean for the latch to handle button presses.
-bool middleButtonLatch = false;
+bool DescoreLatch = false;
+
+// boolean to track the state of the Unloader pneumatic.
+bool isUnloaderPneumaticExtended = false;
+// boolean for the latch to handle button presses.
+bool UnloaderLatch = false;
 
 // Inertia and Distance
 inertial Inertial = inertial(PORT6);
@@ -96,8 +101,8 @@ void drawLogo() {
 void pre_auton(void) {
 
   //Set pneumatic positions
-  pneumaticMain.set(false);
-  pneumaticFront.set(false);
+  pneumaticDescore.set(false);
+  pneumaticUnloader.set(false);
   // Start calibration.
   Inertial.calibrate();
   // Print that the Inertial Sensor is calibrating while
@@ -155,23 +160,24 @@ void usercontrol(void) {
 
       // move the right side of the robot 
     DrivetrainRight.spin(forward, rightX - leftY, rpm);
-
-    bool Frontpneumatic = Controller.ButtonX.pressing();
     
-    if (Frontpneumatic == true){
-      pneumaticFront.set(true);
-    } else {
-      pneumaticFront.set(false);
+    // Toggle logic for the Unloader pneumatic
+    if (Controller.ButtonX.pressing() && !UnloaderLatch) {
+      isUnloaderPneumaticExtended = !isUnloaderPneumaticExtended;
+      UnloaderLatch = true; // Set the latch
+    } else if (!Controller.ButtonX.pressing()) {
+      UnloaderLatch = false; // Release the latch
     }
+    pneumaticUnloader.set(isDescorePneumaticExtended);
 
-    // Toggle logic for the middle pneumatic
-    if (Controller.ButtonY.pressing() && !middleButtonLatch) {
-      isMiddlePneumaticExtended = !isMiddlePneumaticExtended;
-      middleButtonLatch = true; // Set the latch
+    // Toggle logic for the Descore pneumatic
+    if (Controller.ButtonY.pressing() && !DescoreLatch) {
+      isDescorePneumaticExtended = !isDescorePneumaticExtended;
+      DescoreLatch = true; // Set the latch
     } else if (!Controller.ButtonY.pressing()) {
-      middleButtonLatch = false; // Release the latch
+      DescoreLatch = false; // Release the latch
     }
-    pneumaticMain.set(isMiddlePneumaticExtended);
+    pneumaticDescore.set(isDescorePneumaticExtended);
 
 
     // bool for both intakes
