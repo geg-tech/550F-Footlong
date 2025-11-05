@@ -38,8 +38,8 @@ motor_group BothIntakes = motor_group(MotorIntakeMain, MotorIntakeTop);
 drivetrain Drivetrain = drivetrain(DrivetrainLeft, DrivetrainRight, 12.5, 14, 14, inches, 0.75);
 
 // pneumatic class.
-digital_out pneumaticUnloader = digital_out(Brain.ThreeWirePort.A); 
-digital_out pneumaticDescore = digital_out(Brain.ThreeWirePort.B);
+digital_out pneumaticDescore = digital_out(Brain.ThreeWirePort.A); 
+digital_out pneumaticUnloader = digital_out(Brain.ThreeWirePort.B);
 
 // boolean to track the state of the Descore pneumatic.
 bool isDescorePneumaticExtended = false;
@@ -90,12 +90,6 @@ void drawLogo() {
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
-/*                                                                           */
-/*  You may want to perform some actions before the competition starts.      */
-/*  Do them in the following function.  You must return from this function   */
-/*  or the autonomous and usercontrol tasks will not be started.  This       */
-/*  function is only called once after the V5 has been powered on and        */
-/*  not every time that the robot is disabled.                               */
 /*---------------------------------------------------------------------------*/
 
 void pre_auton(void) {
@@ -117,10 +111,6 @@ void pre_auton(void) {
 /*                                                                           */
 /*                              Autonomous Task                              */
 /*                                                                           */
-/*  This task is used to control your robot during the autonomous phase of   */
-/*  a VEX Competition.                                                       */
-/*                                                                           */
-/*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
 void autonomous(void) {
@@ -137,21 +127,16 @@ void autonomous(void) {
 /*                                                                           */
 /*                              User Control Task                            */
 /*                                                                           */
-/*  This task is used to control your robot during the user control phase of */
-/*  a VEX Competition.                                                       */
-/*                                                                           */
-/*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
 void usercontrol(void) {
-  // User control code here, inside the loop
   while (1) {
-    // This is the main execution loop for the user control program.
-    // Each time through the loop your program should update motor + servo
-    // values based on feedback from the joysticks.
-    
     // ........................................................................
-        // Drivetrain movement
+
+
+         // Drivetrain movement //
+       
+
       // get joystick values
     int leftY = 6 * Controller.Axis1.position(); // multiply percent by 6 to get rpm, Controller.AxisNUMBER.position(); returns numbers -100 to 100
     int rightX = 6 * Controller.Axis3.position();
@@ -161,14 +146,18 @@ void usercontrol(void) {
       // move the right side of the robot 
     DrivetrainRight.spin(forward, rightX - leftY, rpm);
     
+
+          // Pneumatic stuff // 
+
+
     // Toggle logic for the Unloader pneumatic
-    if (Controller.ButtonX.pressing() && !UnloaderLatch) {
+    if (Controller.ButtonB.pressing() && !UnloaderLatch) {
       isUnloaderPneumaticExtended = !isUnloaderPneumaticExtended;
       UnloaderLatch = true; // Set the latch
-    } else if (!Controller.ButtonX.pressing()) {
+    } else if (!Controller.ButtonB.pressing()) {
       UnloaderLatch = false; // Release the latch
     }
-    pneumaticUnloader.set(isDescorePneumaticExtended);
+    pneumaticUnloader.set(isUnloaderPneumaticExtended);
 
     // Toggle logic for the Descore pneumatic
     if (Controller.ButtonY.pressing() && !DescoreLatch) {
@@ -178,6 +167,9 @@ void usercontrol(void) {
       DescoreLatch = false; // Release the latch
     }
     pneumaticDescore.set(isDescorePneumaticExtended);
+
+
+          // Intake Stuff //
 
 
     // bool for both intakes
