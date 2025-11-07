@@ -145,9 +145,9 @@ void autonomous(void) {
   wait(200,msec);
   Drivetrain.turnFor(right, 8, degrees);
   wait(200,msec);
-  Drivetrain.driveFor(38,inches,120,rpm,false); // putting false here allows it to move and spin
+  Drivetrain.driveFor(38,inches,80,rpm,false); // putting false here allows it to move and spin
   IntakeMain.spin(forward); // essentially skips having to wait 
-  wait(3000,msec);
+  wait(4500,msec);
   IntakeMain.stop(); //stop intaking after 3 seconds
 
   Drivetrain.setTurnVelocity(100,rpm); //speed up turning it takes too long booooo
