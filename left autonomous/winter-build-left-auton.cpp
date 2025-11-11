@@ -140,7 +140,7 @@ void autonomous(void) {
   // Autonomous (right)
   Inertial.calibrate();
   // set wing piston up
-  pneumaticDescore.set(true);
+  pneumaticDescore.set(true); // move up wing mech to avoid collision
 
 
     //Collect and score field blocks in front
@@ -150,8 +150,8 @@ void autonomous(void) {
   wait(200,msec);
   Drivetrain.driveFor(38,inches,80,rpm,false); // putting false here allows it to move and spin
   IntakeMain.spin(forward); // essentially skips having to wait 
-  wait(1500,msec);
-  pneumaticUnloader.set(true);
+  wait(1500,msec); // tongue mech is timed
+  pneumaticUnloader.set(true); // drop down tongue to capture blocks consistently
   wait(1500,msec);
   IntakeMain.stop(); //stop intaking after 3 seconds
 
