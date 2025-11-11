@@ -139,22 +139,27 @@ void autonomous(void) {
   // ..........................................................................
   // Autonomous (right)
   Inertial.calibrate();
+  // set wing piston up
+  pneumaticDescore.set(true);
+
 
     //Collect and score field blocks in front
-  Drivetrain.driveFor(20, inches, 150, rpm);
+  Drivetrain.driveFor(19, inches, 150, rpm);
   wait(200,msec);
   Drivetrain.turnFor(left, 8, degrees);
   wait(200,msec);
   Drivetrain.driveFor(38,inches,80,rpm,false); // putting false here allows it to move and spin
   IntakeMain.spin(forward); // essentially skips having to wait 
-  wait(3000,msec);
+  wait(1500,msec);
+  pneumaticUnloader.set(true);
+  wait(1500,msec);
   IntakeMain.stop(); //stop intaking after 3 seconds
 
   Drivetrain.setTurnVelocity(100,rpm); //speed up turning it takes too long booooo
   Drivetrain.turnFor(left,60,degrees);
   Drivetrain.setTurnVelocity(50,rpm); // ok return back to scheduled programming
 
-  Drivetrain.driveFor(40,inches,150,rpm); // navigate to long goal
+  Drivetrain.driveFor(41,inches,150,rpm); // navigate to long goal
   Drivetrain.turnFor(left, 25, degrees);
   Drivetrain.driveFor(-20,inches, 150, rpm);
 
