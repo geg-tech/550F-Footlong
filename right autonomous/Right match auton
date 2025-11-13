@@ -160,7 +160,7 @@ void autonomous(void) {
   Drivetrain.turnFor(right,60,degrees);
   Drivetrain.setTurnVelocity(50,rpm); // ok return back to scheduled programming
 
-  Drivetrain.driveFor(40,inches,150,rpm); // navigate to long goal
+  Drivetrain.driveFor(39,inches,150,rpm); // navigate to long goal
   Drivetrain.turnFor(right, 27, degrees);
   Drivetrain.driveFor(-16, inches, 150, rpm); //move to goal
   // -- break off here, navigate to match loader with tongue mech already down and intake
