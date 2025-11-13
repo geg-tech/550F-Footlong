@@ -134,7 +134,7 @@ void pre_auton(void) {
   // uses inertial sensor to turn to an abolute heading on the field 
   // (robot initally starts perpendicular to field w/ front facing 0 degrees)
 
-  float distanceML = 25; // rn set to some arbitrary value, change inside the void autonomous(void) { code
+  float distanceML = 20; // rn set to some arbitrary value, change inside the void autonomous(void) { code
 
 void autonomous(void) {
   // ..........................................................................
@@ -149,9 +149,9 @@ void autonomous(void) {
   wait(200,msec);
   Drivetrain.turnFor(left, 8, degrees);
   wait(200,msec);
-  Drivetrain.driveFor(38,inches,80,rpm,false); // putting false here allows it to move and spin
+  Drivetrain.driveFor(38,inches,150,rpm,false); // putting false here allows it to move and spin
   IntakeMain.spin(forward); // essentially skips having to wait 
-  wait(1500,msec); // tongue mech is timed
+  wait(900,msec); // tongue mech is timed
   pneumaticUnloader.set(true); // drop down tongue to capture blocks consistently
   wait(1500,msec);
   IntakeMain.stop(); //stop intaking after 3 seconds
@@ -160,13 +160,15 @@ void autonomous(void) {
   Drivetrain.turnFor(left,60,degrees);
   Drivetrain.setTurnVelocity(50,rpm); // ok return back to scheduled programming
 
-  Drivetrain.driveFor(41,inches,100,rpm); // navigate to long goal
+  Drivetrain.driveFor(41,inches,150,rpm); // navigate to long goal
   Drivetrain.turnFor(left, 25, degrees);
+  Drivetrain.driveFor(-20, inches, 150, rpm); //move to goal
   // -- break off here, navigate to match loader with tongue mech already down and intake
 
   // --------------------------------------
-  distanceML = 20; // use this variable to fine tune the distance the robot travels to the matchloader
+  distanceML = 21; // use this variable to fine tune the distance the robot travels to the matchloader
   // done to make the backing up to the long goal less tedious to change when tuning matchloader
+  /*
   // --------------------------------------
   Drivetrain.driveFor(distanceML, inches, 180, rpm, false);
   wait(500,msec);
@@ -175,13 +177,21 @@ void autonomous(void) {
   IntakeMain.stop();
   Drivetrain.driveFor(-20 - distanceML, inches, 180, rpm); // back up into goal 
   // 20 inches is the normal distance to the goal prior to match loader route, add distance from match loader route to previous distance
-  
+  */
   // -- anyways return to scheduled programming
   BothIntakes.spin(forward); // score
-  /*
-  wait(2000,msec);
+  wait(1500,msec);
   BothIntakes.stop();
-  */
+
+  Drivetrain.turnFor(left,3.5,degrees);
+  Drivetrain.driveFor(20 + distanceML, inches, 180, rpm, false);
+  wait(800,msec);
+  IntakeMain.spin(forward);
+  wait(2000,msec);
+  IntakeMain.stop();
+  // Drivetrain.turnFor(right,3.5,degrees);
+  Drivetrain.driveFor(-20 - distanceML, inches, 180, rpm);
+  BothIntakes.spin(forward);
   
   // ..........................................................................
 }
