@@ -181,20 +181,8 @@ void autonomous(void) {
   */
   // -- anyways return to scheduled programming
   BothIntakes.spin(forward); // score
-  wait(2,sec);
+  wait(3,sec);
   BothIntakes.stop();
-
-  Drivetrain.turnFor(left,5,degrees); // get from tube code 
-  Drivetrain.driveFor(20 + distanceML, inches, 180, rpm, false); // drive forward to tube
-  wait(800,msec);
-  IntakeMain.spin(forward); // get from tube
-  wait(2000,msec);
-  IntakeMain.stop();
-  // Drivetrain.turnFor(right,3.5,degrees);
-  Drivetrain.driveFor(-20 - distanceML, inches, 180, rpm); //leave tube
-  Drivetrain.turnFor(right,3.5,degrees);
-  BothIntakes.spin(forward); // score
-  wait(3, sec);
 
   Drivetrain.driveFor(10, inches, 180, rpm, true); //(THIS ONLY WORKS IF ALIGNED WITH TOP GOAL) go forward
   Drivetrain.setTurnVelocity(100,rpm); //speed up turning 2 electric boogaloo
@@ -207,8 +195,7 @@ void autonomous(void) {
   Drivetrain.driveFor(20, inches, 200, rpm, true); //go closer to park
   wait(1000,msec);
   Drivetrain.driveFor(20, inches, 300, rpm, true); //go into park 
-  Drivetrain.setTurnVelocity(50,rpm); // ok return back to scheduled programming 2 electric boogaloo
-  
+  Drivetrain.setTurnVelocity(50,rpm); // ok return back to scheduled programming 2 electric boogaloot  
   wait(800,msec);
 
   //Drivetrain.turnFor(left,3.5,degrees);
