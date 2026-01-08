@@ -2,7 +2,7 @@
 /*                                                                            */
 /*    Module:       main.cpp                                                  */
 /*    Author:       ApopkaBeta                                                */
-/*    Created:      11/26/2025, 12:54:28 PM                                   */
+/*    Created:      10/8/2025, 12:54:28 PM                                    */
 /*    Description:  V5 project                                                */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -13,10 +13,6 @@ using namespace vex;
 
 // A global instance of competition
 competition Competition;
-
-// define your global instances of motors and other devices here
-  // brain
-brain Brain;
 
   // define controller
 controller Controller = controller();
@@ -33,7 +29,7 @@ motor ScoopLeft = motor(PORT5, ratio18_1);
 motor ScoopRight = motor(PORT4, ratio18_1, true);
 
     // motor for intake
-motor Intake = motor(PORT3, ratio18_1);
+motor Intake = motor(PORT20, ratio18_1);
 
     // motor groups
 motor_group DrivetrainLeft = motor_group(MotorL1, MotorL2);
@@ -118,6 +114,17 @@ void usercontrol(void) {
       ScoopRight.spin(reverse);
     } else {
       ScoopRight.stop();
+    }
+
+    // variable fo Intake
+    bool ExtremelyNotpressed= Controller.ButtonA.pressing();
+    // set up speed for Intake
+    Intake.setVelocity(200, rpm);
+
+        if (ExtremelyNotpressed == true){
+      Intake.spin(reverse);
+    } else {
+      Intake.stop();
     }
     
     // ........................................................................
